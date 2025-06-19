@@ -13,7 +13,10 @@
           }
         </p>
         <app-list-errors [errors]="errors" />
-        <form [formGroup]="authForm" (ngSubmit)="submitForm()">
+        <form
+          [formGroup]="getOtp ? otpForm : authForm"
+          (ngSubmit)="submitForm()"
+        >
           <fieldset [disabled]="isSubmitting">
             <fieldset class="form-group">
               @if (authType === "register") {
@@ -25,28 +28,39 @@
                 />
               }
             </fieldset>
+
             <fieldset class="form-group">
-              <input
-                formControlName="email"
-                placeholder="Email"
-                class="form-control form-control-lg"
-                type="text"
-              />
+              @if (!getOtp) {
+                <input
+                  formControlName="loginID"
+                  placeholder="Email"
+                  class="form-control form-control-lg"
+                  type="text"
+                />
+              }
             </fieldset>
+
             <fieldset class="form-group">
-              <input
-                formControlName="password"
-                placeholder="Password"
-                class="form-control form-control-lg"
-                type="password"
-              />
+              @if (getOtp) {
+                <input
+                  formControlName="OTP"
+                  placeholder="OTP"
+                  class="form-control form-control-lg"
+                  type="password"
+                />
+              }
             </fieldset>
+            @if (errorMessage) {
+              <div class="alert alert-danger">
+                {{ errorMessage }}
+              </div>
+            }
             <button
               class="btn btn-lg btn-primary pull-xs-right"
-              [disabled]="!authForm.valid"
+              [disabled]="false"
               type="submit"
             >
-              {{ title }}
+              {{ getOtp ? "SIGN IN" : "GET OTP" }}
             </button>
           </fieldset>
         </form>

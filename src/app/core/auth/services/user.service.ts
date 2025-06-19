@@ -22,15 +22,23 @@ export class UserService {
     private readonly router: Router,
   ) {}
 
-  login(credentials: {
-    email: string;
-    password: string;
-  }): Observable<{ user: User }> {
+  login(
+    loginID: string,
+    accountType: number,
+  ): Observable<{ user: User }> {
     return this.http
-      .post<{ user: User }>("/users/login", { user: credentials })
-      .pipe(tap(({ user }) => this.setAuth(user)));
+      .post<{ user: User }>("/authentication/login", {loginID,accountType })
+      .pipe();
   }
-
+  otplogin(
+    loginID: string,
+    accountType: number,
+    OTP:number,
+  ): Observable<{ user: User }> {
+    return this.http
+      .post<{ user: User }>("/authentication/login", { loginID, accountType,OTP})
+      .pipe();
+  }
   register(credentials: {
     username: string;
     email: string;
